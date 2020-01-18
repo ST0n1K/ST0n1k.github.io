@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Asynchronous JavaScript</title>
+</head>
+<body>
+    <h1>Asynchronous JavaScript</h1>
+    <script>
+        function getWeather(woeid) {
+            fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+                .then(result => {
+                    return result.json();
+                })
+                .then(data => {
+
+                    const today = data.consolidated_weather[0];
+                    const tomorrow = data.consolidated_weather[1];
+                    const tomorrow1 = data.consolidated_weather[2];
+                    const tomorrow2 = data.consolidated_weather[3];
+                    const tomorrow3 = data.consolidated_weather[4];
+                    console.log(`Temperature in ${data.title} for ${today.applicable_date} is between ${today.min_temp} and ${today.max_temp}`);
+                    console.log(`Temperature in ${data.title} for ${tomorrow.applicable_date} is between ${tomorrow.min_temp} and ${tomorrow.max_temp}`);
+                    console.log(`Temperature in ${data.title} for ${tomorrow1.applicable_date} is between ${tomorrow1.min_temp} and ${tomorrow1.max_temp}`);
+                    console.log(`Temperature in ${data.title} for ${tomorrow2.applicable_date} is between ${tomorrow2.min_temp} and ${tomorrow2.max_temp}`);
+                    console.log(`Temperature in ${data.title} for ${tomorrow3.applicable_date} is between ${tomorrow3.min_temp} and ${tomorrow3.max_temp}`);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
+        getWeather(924938);
+
+        async function getWeatherAW(woeid) {
+            try {
+                const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+                const data = await result.json();
+                console.log(data);
+                const today = data.consolidated_weather[0];
+                console.log(`Temperature in ${data.title} for ${today.applicable_date} is between ${today.min_temp} and ${today.max_temp}`);
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        getWeatherAW(924938);
+    </script>
+</body>
+</html>
